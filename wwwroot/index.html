@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>CsharpCompiler</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="CsharpCompiler.styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="app">Loading...</div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="monaco-editor/min/vs/loader.js"></script>
+    <script>
+        var monacoInterop = {};
+        monacoInterop.editors = {};
+        monacoInterop.initialize = function initialize(elementId, initialCode, language) {
+            require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
+            require(['vs/editor/editor.main'], function initializeEditor() {
+                var editor = monaco.editor.create(document.getElementById(elementId), {
+                    value: initialCode,
+                    language: language
+                });
+                monacoInterop.editors[elementId] = editor;
+            });
+        }
+        monacoInterop.getCode = function getCode(elementId) {
+            return monacoInterop.editors[elementId].getValue();
+        }
+        monacoInterop.setCode = function setCode(elementId, code) {
+            monacoInterop.editors[elementId].setValue(code);
+        }
+        window.monacoInterop = monacoInterop;
+    </script>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+
+</html>
