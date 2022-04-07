@@ -38,8 +38,9 @@ public static class Compiler
     {
         async Task InitializeInternal()
         {
-            var response = await client.GetFromJsonAsync<BlazorBoot>("_bin/blazor.boot.json");
-            var assemblies = await Task.WhenAll(response.resources.assembly.Keys.Select(x => client.GetAsync("_bin/" + x)));
+            // Path.Combine(Directory.GetCurrentDirectory();
+            var response = await client.GetFromJsonAsync<BlazorBoot>(Path.Combine(Directory.GetCurrentDirectory(), "_framework/blazor.boot.json"));
+            var assemblies = await Task.WhenAll(response.resources.assembly.Keys.Select(x => client.GetAsync( "_framework/" + x)));
 
             var references = new List<MetadataReference>(assemblies.Length);
             foreach (var asm in assemblies)
