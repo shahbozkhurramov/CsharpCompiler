@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
@@ -12,16 +13,16 @@ namespace CsharpCompiler.Pages
     {
         public string Output = "";
         const string DefaultCode = @"using System;
-
-Console.WriteLine(""Hello World"");
+var a = Console.ReadLine().Split();
+Console.WriteLine(a[2]);
 ";
 
-        [Inject] private HttpClient Client { get; set; }
+        [Inject] private HttpClient _httpClient { get; set; }
         [Inject] private Monaco Monaco { get; set; }
 
         protected override Task OnInitializedAsync()
         {
-            Compiler.InitializeMetadataReferences(Client);
+            Compiler.InitializeMetadataReferences(_httpClient);
             return base.OnInitializedAsync();
         }
 
@@ -43,12 +44,14 @@ Console.WriteLine(""Hello World"");
         async Task RunInternal()
         {
             Output = "";
-
             Console.WriteLine("Compiling and Running code");
             var sw = Stopwatch.StartNew();
-            // var currentIn = Console.In;
+            var bytes = Encoding.UTF8.GetBytes(await _httpClient.GetStringAsync("sample-data/1/1.in"));
+            var reader  = new StreamReader(new MemoryStream(bytes));
+            Console.SetIn(reader);
             
             var currentOut = Console.Out;
+            
             var writer = new StringWriter();
             Console.SetOut(writer);
 
@@ -75,13 +78,22 @@ Console.WriteLine(""Hello World"");
             {
                 exception = ex;
             }
-            Output = writer.ToString();
-            if (exception != null)
+            var result1 = writer.ToString();
+            var result2 = (await _httpClient.GetStringAsync("sample-data/1/1.out"));
+            if((result1.TrimEnd() == result2.TrimEnd()))
             {
-                Output += "\r\n" + exception.ToString();
+                Output = "Success";
             }
+            else if(exception != null)
+            {
+                Output = "Runtime error\r\n" + exception.ToString();
+            }
+            else
+            {
+                Output = "Wrong answer";
+            }
+        
             Console.SetOut(currentOut);
-
             sw.Stop();
             Console.WriteLine("Done in " + sw.ElapsedMilliseconds + "ms");
         }
