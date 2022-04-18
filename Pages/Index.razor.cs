@@ -82,7 +82,7 @@ Console.WriteLine(a[2]);
             var result2 = (await _httpClient.GetStringAsync("sample-data/1/1.out"));
             if((result1.TrimEnd() == result2.TrimEnd()))
             {
-                Output = "Success";
+                Output = "Success" +result1;
             }
             else if(exception != null)
             {
@@ -90,7 +90,7 @@ Console.WriteLine(a[2]);
             }
             else
             {
-                Output = "Wrong answer";
+                Output = "Wrong answer"+result1;
             }
         
             Console.SetOut(currentOut);
