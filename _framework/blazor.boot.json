@@ -7,9 +7,9 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "CsharpCompiler.dll": "sha256-s5tD5iBRfF0RNhbx2Z+RI+bFkRR+uRZ50tY3ct+Pl4o=",
-      "Microsoft.AspNetCore.Components.dll": "sha256-3BjdYnVvugCoRmBO+0I4SfviDCFpcpKlf7YirFpuSjU=",
-      "Microsoft.AspNetCore.Components.Web.dll": "sha256-J56CIqNtJKqXm6dWMAhvRI23W5p7RnErlWEDZVcwjV0=",
+      "CsharpCompiler.dll": "sha256-\/kl5BUL0t0V2EfuYPJeA\/Gys6TGoMIPIBYfodRbqDEg=",
+      "Microsoft.AspNetCore.Components.dll": "sha256-RznK5btvZYyzriMmjyxHU6UsJAk2n2YI9i8AyipbdBE=",
+      "Microsoft.AspNetCore.Components.Web.dll": "sha256-JrcahE7oAMMG1NZqgJfAQc1mtGDS9xAO6cDBWxDLgoY=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-Izlw\/SnIKXEmOa2P51s8rKqkVBfJ+MDvJMUpyP5lHkk=",
       "Microsoft.CodeAnalysis.CSharp.dll": "sha256-456WJ3WRXEp0sbKe1mTzUtftrNPo95jxGkgvAFfAiCA=",
       "Microsoft.CodeAnalysis.dll": "sha256-3lH1FdLY11FdtMYPH0D641H68UpO7qaGNfGfnvEe\/JI=",
