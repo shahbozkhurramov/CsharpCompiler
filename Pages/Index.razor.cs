@@ -40,8 +40,6 @@ public partial class Index
     async Task RunInternal()
     {
         Output = string.Empty;
-
-        var sw = Stopwatch.StartNew();
         // var currentIn = Console.In;
 
         var currentOut = Console.Out;
@@ -76,9 +74,6 @@ public partial class Index
             Output += "\r\n" + exception.ToString();
 
         Console.SetOut(currentOut);
-
-        sw.Stop();
-        Output +="\nDone in " + sw.ElapsedMilliseconds + " ms...";
     }
 
     void SetCode(string code)
