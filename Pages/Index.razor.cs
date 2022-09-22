@@ -1,10 +1,5 @@
-using System;
 using System.Diagnostics;
-using System.IO;
-using System.Net.Http;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
 namespace CsharpCompiler.Pages
@@ -12,17 +7,16 @@ namespace CsharpCompiler.Pages
     public partial class Index
     {
         public string Output = "";
-        const string DefaultCode = @"using System;
-var a = Console.ReadLine().Split();
-Console.WriteLine(a[2]);
+        const string HelloWorld = @"using System;
+Console.WriteLine(""Hello World"");
 ";
 
-        [Inject] private HttpClient _httpClient { get; set; }
+        [Inject] private HttpClient Client { get; set; }
         [Inject] private Monaco Monaco { get; set; }
 
         protected override Task OnInitializedAsync()
         {
-            Compiler.InitializeMetadataReferences(_httpClient);
+            Compiler.InitializeMetadataReferences(Client);
             return base.OnInitializedAsync();
         }
 
@@ -31,7 +25,7 @@ Console.WriteLine(a[2]);
             base.OnAfterRender(firstRender);
             if (firstRender)
             {
-                Monaco.Initialize("container", DefaultCode, "csharp");
+                Monaco.Initialize("container", HelloWorld, "csharp");
                 Run();
             }
         }
@@ -44,14 +38,12 @@ Console.WriteLine(a[2]);
         async Task RunInternal()
         {
             Output = "";
+
             Console.WriteLine("Compiling and Running code");
             var sw = Stopwatch.StartNew();
-            var bytes = Encoding.UTF8.GetBytes(await _httpClient.GetStringAsync("sample-data/1/1.in"));
-            var reader  = new StreamReader(new MemoryStream(bytes));
-            Console.SetIn(reader);
-            
+            // var currentIn = Console.In;
+
             var currentOut = Console.Out;
-            
             var writer = new StringWriter();
             Console.SetOut(writer);
 
@@ -78,22 +70,13 @@ Console.WriteLine(a[2]);
             {
                 exception = ex;
             }
-            var result1 = writer.ToString();
-            var result2 = (await _httpClient.GetStringAsync("sample-data/1/1.out"));
-            if((result1.TrimEnd() == result2.TrimEnd()))
+            Output = writer.ToString();
+            if (exception != null)
             {
-                Output = "Success" +result1;
+                Output += "\r\n" + exception.ToString();
             }
-            else if(exception != null)
-            {
-                Output = "Runtime error\r\n" + exception.ToString();
-            }
-            else
-            {
-                Output = "Wrong answer"+result1;
-            }
-        
             Console.SetOut(currentOut);
+
             sw.Stop();
             Console.WriteLine("Done in " + sw.ElapsedMilliseconds + "ms");
         }
