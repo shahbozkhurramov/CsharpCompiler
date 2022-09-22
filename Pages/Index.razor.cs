@@ -86,4 +86,9 @@ public partial class Index
         Code = code;
         Monaco.SetCode("container", code);
     }
+
+    void ClearCode()
+    {
+        SetCode(string.Empty);
+    }
 }
