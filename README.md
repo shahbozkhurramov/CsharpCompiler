@@ -1,3 +1,3 @@
 # CsharpCompiler
 C# compiler on blazorwasm
-**Checks C# code according to input output files**
+**Compiles c# code on browser**
