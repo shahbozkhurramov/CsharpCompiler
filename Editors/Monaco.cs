@@ -1,6 +1,6 @@
 using Microsoft.JSInterop;
 
-namespace CsharpCompiler;
+namespace CsharpCompiler.Editors;
 
 public class Monaco
 {

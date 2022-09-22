@@ -1,36 +1,14 @@
+using CsharpCompiler.Models;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace CsharpCompiler;
 
 public static class Compiler
 {
-    class BlazorBoot
-    {
-        public bool cacheBootResources { get; set; }
-        public object[] config { get; set; }
-        public bool debugBuild { get; set; }
-        public string entryAssembly { get; set; }
-        public bool linkerEnabled { get; set; }
-        public Resources resources { get; set; }
-    }
-
-    class Resources
-    {
-        public Dictionary<string, string> assembly { get; set; }
-        public Dictionary<string, string> pdb { get; set; }
-        public Dictionary<string, string> runtime { get; set; }
-    }
-
     private static Task InitializationTask;
     private static List<MetadataReference> References;
 
@@ -96,9 +74,7 @@ public static class Compiler
         }
 
         if (error)
-        {
             return (false, null);
-        }
 
         using (var outputAssembly = new MemoryStream())
         {
@@ -106,13 +82,5 @@ public static class Compiler
 
             return (true, Assembly.Load(outputAssembly.ToArray()));
         }
-    }
-
-    public static string Format(string source)
-    {
-        var tree = CSharpSyntaxTree.ParseText(source);
-        var root = tree.GetRoot();
-        var normalized = root.NormalizeWhitespace();
-        return normalized.ToString();
     }
 }
